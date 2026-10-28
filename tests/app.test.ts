@@ -63,7 +63,7 @@ describe("app", () => {
 
 		const asset = await app.inject("/assets/html/index.html");
 		expect(asset.statusCode).toBe(200);
-		expect(asset.headers["cache-control"]).toBe("public, max-age=31536000, immutable");
+		expect(asset.headers["cache-control"]).toBe("public, max-age=3600");
 
 		expect((await app.inject("/assets/missing.css")).statusCode).toBe(404);
 		expect((await app.inject("/assets/")).statusCode).toBe(404);

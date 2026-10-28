@@ -20,8 +20,15 @@ const requestLoggingPlugin: FastifyPluginAsync = async (fastify) => {
 		return;
 	}
 
+	// Lets clients and support tickets quote an id that matches the log line.
+	fastify.addHook("onSend", async (request, reply, payload) => {
+		reply.header("x-request-id", request.id);
+		return payload;
+	});
+
 	fastify.addHook("onResponse", async (request, reply) => {
 		const fields = {
+			requestId: request.id,
 			method: request.method,
 			path: request.routeOptions.url ?? request.url.split("?")[0],
 			status: reply.statusCode,

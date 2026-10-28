@@ -30,7 +30,7 @@ const publicEnvSchema = z.object({
 	DEFAULT_TIMEZONE: z.string().default("UTC"),
 
 	SITE_ORIGIN: z.url().default(defaultOrigin),
-	SITE_DOCUMENTATION: z.url().default(`${defaultOrigin}/documentation`),
+	SITE_DOCUMENTATION: z.url().default(`${defaultOrigin}/docs`),
 	SITE_API: z.url().default(`${defaultOrigin}${envAppConfig.API_PREFIX}`),
 });
 

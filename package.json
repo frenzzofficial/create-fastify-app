@@ -7,13 +7,14 @@
 		"arch": "depcruise src --config .dependency-cruiser.cjs",
 		"build:check": "bun build src/index.ts --outdir dist --target bun",
 		"check": "bun run verify",
+		"ci": "bun run typecheck && bun run lint && bun run type-coverage && bun run knip && bun run arch && bun run spell && bun run secrets && bun run test && bun run build:check",
 		"deps:upgrade": "ncu -i",
 		"dev": "bun --watch src/app/server.ts",
 		"format": "biome format --write .",
 		"knip": "bunx --bun knip",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
-		"prepare": "husky",
+		"prepare": "husky || true",
 		"secrets": "secretlint \"**/*\"",
 		"spell": "cspell --no-progress \"src/**/*.ts\" \"tests/**/*.ts\" \"*.md\"",
 		"start": "bun src/app/server.ts",
@@ -21,19 +22,18 @@
 		"test:coverage": "bun test --coverage",
 		"type-coverage": "type-coverage --strict --at-least 100 --ignore-catch",
 		"typecheck": "tsc --noEmit",
-		"verify": "bun run typecheck && bun run lint:fix && bun run type-coverage && bun run spell && bun run test"
+		"verify": "bun run typecheck && bun run lint:fix && bun run type-coverage && bun run knip && bun run spell && bun run test"
 	},
 	"dependencies": {
 		"@fastify/compress": "^9.3.0",
 		"@fastify/cookie": "^11.1.5",
 		"@fastify/cors": "^11.3.1",
-		"@fastify/helmet": "^13.2.0",
-		"@fastify/http-proxy": "^11.6.5",
 		"@fastify/rate-limit": "^11.2.1",
 		"@fastify/swagger": "^9.9.2",
 		"@fastify/swagger-ui": "^6.1.2",
 		"fastify": "^5.12.7",
-		"fastify-plugin": "^6.0.1"
+		"fastify-plugin": "^6.0.1",
+		"zod": "^4.6.7"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.6.3",
@@ -41,7 +41,7 @@
 		"@commitlint/config-conventional": "^21.2.4",
 		"@faker-js/faker": "^10.6.0",
 		"@secretlint/secretlint-rule-preset-recommend": "^13.1.0",
-		"@types/bun": "latest",
+		"@types/bun": "^1.4.4",
 		"cspell": "^10.4.0",
 		"dependency-cruiser": "^18.7.0",
 		"husky": "^9.1.7",

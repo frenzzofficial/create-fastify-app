@@ -40,10 +40,9 @@ const csrfPlugin: FastifyPluginAsync = async (fastify) => {
 			token = generateToken();
 
 			reply.setCookie(CSRF_COOKIE_NAME, token, {
+				// Must be readable by client JS so it can be echoed back in the header.
+				// SameSite / Secure / Domain come from the cookie plugin defaults.
 				httpOnly: false,
-				path: "/",
-				sameSite: "lax",
-				secure: envAppConfig.NODE_ENV === "production",
 			});
 		}
 

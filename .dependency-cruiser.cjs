@@ -11,12 +11,12 @@ module.exports = {
 		{
 			name: "env-is-a-leaf-layer",
 			comment:
-				"env files may only depend on other env files, plus the generic parse-env helper",
+				"env files may only depend on other env files, plus the generic parse-env and duration helpers",
 			severity: "error",
 			from: { path: "^src/packages/env" },
 			to: {
 				path: "^src/packages/(configs|middlewares|utils)",
-				pathNot: "^src/packages/utils/parse-env\\.ts$",
+				pathNot: "^src/packages/utils/(parse-env|duration)\\.ts$",
 			},
 		},
 		{

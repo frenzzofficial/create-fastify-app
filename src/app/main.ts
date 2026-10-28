@@ -6,7 +6,6 @@ import cookie from "../packages/middlewares/cookie";
 import cors from "../packages/middlewares/cors";
 import csrfProtection from "../packages/middlewares/csrf";
 import errorHandler from "../packages/middlewares/error-handler";
-import helmetPlugin from "../packages/middlewares/helmet";
 import notFound from "../packages/middlewares/not-found";
 import rateLimiter from "../packages/middlewares/rate-limiter";
 import requestLogging from "../packages/middlewares/request-logging";
@@ -21,9 +20,13 @@ export const createApp = async (): Promise<FastifyInstance> => {
 		logController: new LogController({ disableRequestLogging: true }),
 		// Parser-level limit — the real backstop behind the Content-Length check in body-limit.
 		bodyLimit: envAppConfig.BODY_LIMIT_BYTES,
-		// On Vercel the platform overwrites x-forwarded-for, so `request.ip` can trust it.
-		// Without this every client shares the proxy's IP (and one rate-limit bucket).
-		trustProxy: process.env.VERCEL !== undefined,
+		// Trust x-forwarded-for so `request.ip` is the real client, not the proxy. Vercel
+		// overwrites that header, so it is always safe there; elsewhere set TRUST_PROXY=true
+		// ONLY when you run behind a proxy you control (nginx, a load balancer, ...).
+		// Without it every client shares the proxy's IP, and therefore one rate-limit bucket.
+		trustProxy: envAppConfig.TRUST_PROXY || process.env.VERCEL !== undefined,
+		// Globally unique request ids (Fastify's default is a per-process counter: "req-1").
+		genReqId: () => crypto.randomUUID(),
 	});
 
 	// Order matters: hooks only apply to routes registered AFTER the plugin, and run in
@@ -39,7 +42,6 @@ export const createApp = async (): Promise<FastifyInstance> => {
 	await app.register(compression);
 	await app.register(bodyLimit);
 	await app.register(cookie); // must precede csrf, which reads cookies
-	await app.register(helmetPlugin);
 	await app.register(rateLimiter);
 	await app.register(csrfProtection);
 

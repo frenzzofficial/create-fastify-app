@@ -9,10 +9,24 @@ const serverEnvSchema = z
 	.object({
 		// Bind host/port for the server process — not the public-facing
 		HOST: z.string().default("localhost"),
-		PORT: z.coerce.number().default(7164),
+		PORT: z.coerce.number().int().min(0).max(65535).default(7164),
 		NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
-		API_PREFIX: z.string().default("/api"),
-		API_VERSION: z.string().default("v1"),
+		// Joined as `${API_PREFIX}/${API_VERSION}`, so no trailing slash and a leading one.
+		API_PREFIX: z
+			.string()
+			.regex(
+				/^\/[\w-]+(\/[\w-]+)*$/,
+				"API_PREFIX must look like /api (leading /, no trailing /)",
+			)
+			.default("/api"),
+		API_VERSION: z
+			.string()
+			.regex(/^[\w.-]+$/, "API_VERSION must look like v1")
+			.default("v1"),
+
+		// Trust x-forwarded-for for the client IP. Only enable behind a proxy you control;
+		// Vercel is detected automatically.
+		TRUST_PROXY: z.stringbool().default(false),
 
 		APP_SECRET: z
 			.string()
@@ -29,7 +43,8 @@ const serverEnvSchema = z
 
 		// z.stringbool understands "true"/"false"/"1"/"0"/"yes"/"no".
 		// z.coerce.boolean() would turn the string "false" into true.
-		ENABLE_COMPRESSION: z.stringbool().default(true),
+		// Vercel's edge already compresses responses, so default to off there.
+		ENABLE_COMPRESSION: z.stringbool().default(process.env.VERCEL === undefined),
 		ENABLE_CORS: z.stringbool().default(true),
 		ENABLE_RATE_LIMIT: z.stringbool().default(true),
 		ENABLE_REQUEST_LOGGING: z.stringbool().default(true),

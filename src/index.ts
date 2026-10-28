@@ -24,9 +24,12 @@ const buildApp = async (): Promise<FastifyInstance> => {
 
 		const errorApp = Fastify();
 		errorApp.all("*", async (_request, reply) =>
-			reply
-				.code(500)
-				.send({ success: false, message: "Server failed to start", error: message }),
+			reply.code(500).send({
+				success: false,
+				message: "Server failed to start",
+				// The detail is in the function logs; only expose it outside production.
+				...(process.env.NODE_ENV === "production" ? {} : { error: message }),
+			}),
 		);
 		await errorApp.ready();
 		return errorApp;

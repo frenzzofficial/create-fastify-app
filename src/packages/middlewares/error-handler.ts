@@ -30,7 +30,11 @@ const errorHandlerPlugin: FastifyPluginAsync = async (fastify) => {
 				});
 			}
 
-			return reply.status(error.statusCode).send(body(error.message));
+			// Non-operational errors can carry internal detail (query text, paths, ...).
+			// Log it, but never send it to the client.
+			return reply
+				.status(error.statusCode)
+				.send(body(error.isOperational ? error.message : "Internal server error"));
 		}
 
 		// Fastify's built-in parser uses this code for malformed JSON.

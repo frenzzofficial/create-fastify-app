@@ -1,0 +1,27 @@
+name: CI
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    verify:
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        env:
+            HUSKY: "0" # no git hooks in CI
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest # pin to the Bun version you deploy with (vercel.json bunVersion)
+            - run: bun install --frozen-lockfile
+            - run: bun run ci
