@@ -7,7 +7,7 @@ import type { FastifyInstance } from "fastify";
 let appPromise: Promise<FastifyInstance> | undefined;
 
 const getApp = (): Promise<FastifyInstance> => {
-	appPromise ??= import("../src/app/main.js").then(async ({ createApp }) => {
+	appPromise ??= import("./app/main.js").then(async ({ createApp }) => {
 		const app = await createApp();
 		await app.ready();
 		return app;
