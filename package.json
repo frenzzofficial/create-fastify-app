@@ -1,44 +1,56 @@
 {
-  "name": "fastify-vercel-template",
-  "version": "1.0.0",
-  "description": " Fastify + Vercel + Supabase + Sequelize + Postgres + MySQL",
-  "main": "index.js",
-  "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "build": "tsc -p tsconfig.json",
-    "format": "prettier --write ."
-  },
-  "author": "@vivekcsein",
-  "license": "ISC",
-  "packageManager": "pnpm@10.13.1",
-  "dependencies": {
-    "@fastify/cookie": "^11.0.2",
-    "@fastify/cors": "^11.1.0",
-    "@fastify/helmet": "^13.0.1",
-    "@fastify/http-proxy": "^11.3.0",
-    "@fastify/rate-limit": "^10.3.0",
-    "@fastify/static": "^8.2.0",
-    "@supabase/supabase-js": "^2.56.1",
-    "bcryptjs": "^3.0.2",
-    "dotenv": "16.5.0",
-    "fastify": "^5.5.0",
-    "fastify-plugin": "^5.0.1",
-    "zod": "^4.1.5"
-  },
-  "devDependencies": {
-    "@types/node": "^24.3.0",
-    "@vercel/node": "^5.3.17",
-    "prettier": "^3.6.2",
-    "tsx": "^4.20.5",
-    "typescript": "^5.9.2"
-  },
-  "keywords": [
-    "fastify",
-    "vercel",
-    "typescript",
-    "supabase",
-    "sequelize",
-    "postgres",
-    "mysql"
-  ]
+	"name": "create-fastify-app",
+	"private": true,
+	"description": "A lightweight, scalable authentication service featuring Fastify, Drizzle ORM, PostgreSQL, and TypeScript",
+	"type": "module",
+	"scripts": {
+		"arch": "depcruise src --config .dependency-cruiser.cjs",
+		"build:check": "bun build src/index.ts --outdir dist --target bun",
+		"check": "bun run verify",
+		"deps:upgrade": "ncu -i",
+		"dev": "bun --watch src/app/server.ts",
+		"format": "biome format --write .",
+		"knip": "bunx --bun knip",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"prepare": "husky",
+		"secrets": "secretlint \"**/*\"",
+		"spell": "cspell --no-progress \"src/**/*.ts\" \"tests/**/*.ts\" \"*.md\"",
+		"start": "bun src/app/server.ts",
+		"test": "bun test",
+		"test:coverage": "bun test --coverage",
+		"type-coverage": "type-coverage --strict --at-least 100 --ignore-catch",
+		"typecheck": "tsc --noEmit",
+		"verify": "bun run typecheck && bun run lint:fix && bun run type-coverage && bun run spell && bun run test"
+	},
+	"dependencies": {
+		"@fastify/compress": "^9.3.0",
+		"@fastify/cookie": "^11.1.5",
+		"@fastify/cors": "^11.3.1",
+		"@fastify/helmet": "^13.2.0",
+		"@fastify/http-proxy": "^11.6.5",
+		"@fastify/rate-limit": "^11.2.1",
+		"@fastify/swagger": "^9.9.2",
+		"@fastify/swagger-ui": "^6.1.2",
+		"fastify": "^5.12.7",
+		"fastify-plugin": "^6.0.1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.6.3",
+		"@commitlint/cli": "^21.2.4",
+		"@commitlint/config-conventional": "^21.2.4",
+		"@faker-js/faker": "^10.6.0",
+		"@secretlint/secretlint-rule-preset-recommend": "^13.1.0",
+		"@types/bun": "latest",
+		"cspell": "^10.4.0",
+		"dependency-cruiser": "^18.7.0",
+		"husky": "^9.1.7",
+		"knip": "^6.43.0",
+		"lint-staged": "^17.6.0",
+		"npm-check-updates": "^23.1.1",
+		"secretlint": "^13.1.0",
+		"sort-package-json": "^4.1.0",
+		"type-coverage": "^2.30.4",
+		"typescript": "^5.9.3"
+	}
 }
