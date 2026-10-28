@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 
-import { appConfig } from "../packages/configs/app.config";
+import { appConfig } from "../packages/configs/app.config.js";
 
 // Every versioned route lives in one encapsulated plugin registered under a prefix,
 // e.g. /api/v1/... . Root-level routes that shouldn't be versioned (/, /health) stay

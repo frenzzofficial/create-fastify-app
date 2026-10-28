@@ -2,8 +2,8 @@ import cors, { type FastifyCorsOptions } from "@fastify/cors";
 import type { FastifyInstance } from "fastify";
 import fp from "fastify-plugin";
 
-import { envAppConfig } from "../env/app.env";
-import { envClientConfig } from "../env/client.env";
+import { envAppConfig } from "../env/app.env.js";
+import { envClientConfig } from "../env/client.env.js";
 
 /**
  * CORS plugin

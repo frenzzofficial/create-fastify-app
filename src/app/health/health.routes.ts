@@ -1,8 +1,8 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
-import { appConfig } from "../../packages/configs/app.config";
-import { ok } from "../../packages/utils/response";
-import { getHealthStatus } from "./health.service";
+import { appConfig } from "../../packages/configs/app.config.js";
+import { ok } from "../../packages/utils/response.js";
+import { getHealthStatus } from "./health.service.js";
 
 const handleHealthCheck = async (_request: FastifyRequest, reply: FastifyReply) => {
 	const health = await getHealthStatus();

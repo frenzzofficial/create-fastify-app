@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { parseEnv } from "../utils/parse-env";
+import { parseEnv } from "../utils/parse-env.js";
 
 const clientEnvSchema = z.object({
 	// Primary frontend origin

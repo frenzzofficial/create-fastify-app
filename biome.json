@@ -6,7 +6,6 @@
 		"useIgnoreFile": true,
 		"defaultBranch": "main"
 	},
-
 	"files": {
 		"includes": [
 			"**",
@@ -21,7 +20,6 @@
 			"!*.lock"
 		]
 	},
-
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
@@ -32,7 +30,6 @@
 		"bracketSpacing": true,
 		"formatWithErrors": false
 	},
-
 	"assist": {
 		"enabled": true,
 		"actions": {
@@ -41,7 +38,6 @@
 			}
 		}
 	},
-
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -68,11 +64,16 @@
 			"correctness": {
 				"noUnusedImports": "error",
 				"noUnusedVariables": "error",
-				"noUnusedFunctionParameters": "error"
+				"noUnusedFunctionParameters": "error",
+				"useImportExtensions": {
+					"level": "error",
+					"options": {
+						"forceJsExtensions": true
+					}
+				}
 			}
 		}
 	},
-
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double",
@@ -84,7 +85,6 @@
 			"bracketSameLine": false
 		}
 	},
-
 	"json": {
 		"formatter": {
 			"enabled": true
@@ -93,7 +93,13 @@
 	"overrides": [
 		{
 			"includes": ["tests/**"],
-			"linter": { "rules": { "style": { "noNonNullAssertion": "off" } } }
+			"linter": {
+				"rules": {
+					"style": {
+						"noNonNullAssertion": "off"
+					}
+				}
+			}
 		}
 	]
 }

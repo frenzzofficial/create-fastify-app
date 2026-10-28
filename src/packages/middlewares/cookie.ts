@@ -2,7 +2,7 @@ import cookie, { type FastifyCookieOptions } from "@fastify/cookie";
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
-import { envAuthConfig } from "../env/auth.env";
+import { envAuthConfig } from "../env/auth.env.js";
 
 /**
  * Cookie plugin

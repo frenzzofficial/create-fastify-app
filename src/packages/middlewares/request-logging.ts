@@ -1,8 +1,8 @@
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
-import { envAppConfig } from "../env/app.env";
-import { logger } from "../utils/logger";
+import { envAppConfig } from "../env/app.env.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Request logging

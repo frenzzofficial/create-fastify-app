@@ -1,9 +1,9 @@
 // Local development server only (`bun run dev` / `bun run start`).
-// On Vercel the app is served from src/index.ts, never from here.
+// On Vercel the app is served from api/index.ts, never from here.
 
-import { appConfig } from "../packages/configs/app.config";
-import { logger } from "../packages/utils/logger";
-import { createApp } from "./main";
+import { appConfig } from "../packages/configs/app.config.js";
+import { logger } from "../packages/utils/logger.js";
+import { createApp } from "./main.js";
 
 const startServer = async (): Promise<void> => {
 	try {

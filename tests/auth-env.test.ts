@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
-import { parseAuthEnv } from "../src/packages/env/auth.env";
-import { parseDurationSeconds } from "../src/packages/utils/duration";
+import { parseAuthEnv } from "../src/packages/env/auth.env.js";
+import { parseDurationSeconds } from "../src/packages/utils/duration.js";
 
 const strong = (seed: string): string => seed.repeat(40).slice(0, 40);
 

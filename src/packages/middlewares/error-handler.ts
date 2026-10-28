@@ -1,8 +1,8 @@
 import type { FastifyError, FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
-import { AppError } from "../utils/errors";
-import { logger } from "../utils/logger";
+import { AppError } from "../utils/errors.js";
+import { logger } from "../utils/logger.js";
 
 type ErrorBody = {
 	success: false;

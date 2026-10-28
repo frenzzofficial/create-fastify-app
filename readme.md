@@ -37,8 +37,9 @@ Commits are checked by Husky: Biome and `tsc` on staged files, secretlint, and C
 ## Project layout
 
 ```
+api/
+  index.ts              Vercel function: builds the app once per warm instance, JSON 500 if startup fails
 src/
-  index.ts              Vercel entry: builds the app, returns a JSON 500 if startup fails
   app/                  This app's wiring and routes
     main.ts             createApp(): Fastify options + plugin order
     routes.ts           Which routes exist (OpenAPI first, then health, static, API)
@@ -103,14 +104,17 @@ v1.get("/things", { schema: { tags: ["API"], summary: "List things" } }, async (
 
 ## Deployment (Vercel)
 
-`vercel.json` selects the Bun runtime and Vercel detects `src/index.ts` (default-exported Fastify
-instance). `trustProxy` is enabled automatically on Vercel so rate limiting sees real client IPs; set
-`TRUST_PROXY=true` elsewhere only when behind a proxy you control. Response compression defaults to
-off on Vercel (the edge already compresses).
+`vercel.json` routes every request to `api/index.ts`, a Vercel function that builds the Fastify app
+once per warm instance and hands requests to it. It runs on Vercel's Node.js runtime (no `bunVersion`).
 
-Things to know:
-
-- The rate limiter keeps its counters in memory, per instance. On serverless or multiple replicas it
-  is best-effort; use a shared store (e.g. Redis) or the platform firewall for hard limits.
-- HTML pages and assets are read from `src/assets` at runtime. Confirm on a preview deployment that
-  they are included in the function bundle.
+- Relative imports must carry a `.js` extension (`from "./routes.js"`): Vercel compiles each file to
+  plain ESM and Node cannot resolve imports that lack one. Biome enforces this
+  (`useImportExtensions`); `bun run lint:fix` fixes violations.
+- Set the four production secrets in the Vercel project (`APP_SECRET`, `AUTH_COOKIE_SECRET`,
+  `AUTH_ACCESS_TOKEN_SECRET`, `AUTH_REFRESH_TOKEN_SECRET`), then redeploy. A bad environment returns a
+  JSON 500 and logs `[startup failed]` with the reasons.
+- `trustProxy` is enabled automatically on Vercel so rate limiting sees real client IPs; set
+  `TRUST_PROXY=true` elsewhere only behind a proxy you control. Response compression defaults to off
+  on Vercel (the edge already compresses).
+- The rate limiter keeps its counters in memory, per instance. On serverless it is best-effort; use a
+  shared store (e.g. Redis) or the platform firewall for hard limits.

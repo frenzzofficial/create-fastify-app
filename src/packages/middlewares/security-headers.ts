@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
-import { envAppConfig } from "../env/app.env";
+import { envAppConfig } from "../env/app.env.js";
 
 /**
  * Security headers

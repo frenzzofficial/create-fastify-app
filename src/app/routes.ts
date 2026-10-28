@@ -1,9 +1,9 @@
 import type { FastifyInstance } from "fastify";
 
-import openApi from "../packages/middlewares/openapi";
-import { registerHealthRoutes } from "./health/health.routes";
-import { registerApiRoutes } from "./register-api-routes";
-import { registerStaticRoutes } from "./static/static.routes";
+import openApi from "../packages/middlewares/openapi.js";
+import { registerHealthRoutes } from "./health/health.routes.js";
+import { registerApiRoutes } from "./register-api-routes.js";
+import { registerStaticRoutes } from "./static/static.routes.js";
 
 // This file (and register-api-routes.ts) lives under src/app, not src/packages — it's
 // composition/wiring (deciding WHICH routes exist and in what order), the same job as

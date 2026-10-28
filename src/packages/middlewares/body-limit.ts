@@ -1,8 +1,8 @@
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
-import { envAppConfig } from "../env/app.env";
-import { AppError } from "../utils/errors";
+import { envAppConfig } from "../env/app.env.js";
+import { AppError } from "../utils/errors.js";
 
 /**
  * Body size limit

@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import type { FastifyInstance } from "fastify";
 
-import { createApp } from "../src/app/main";
-import { AppError } from "../src/packages/utils/errors";
+import { createApp } from "../src/app/main.js";
+import { AppError } from "../src/packages/utils/errors.js";
 
 type ErrorBody = { success: boolean; message: string };
 type HealthBody = { success: boolean; data: { status: string; timestamp: string } };

@@ -1,8 +1,8 @@
 import type { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
 import fp from "fastify-plugin";
 
-import { envAppConfig } from "../env/app.env";
-import { AppError } from "../utils/errors";
+import { envAppConfig } from "../env/app.env.js";
+import { AppError } from "../utils/errors.js";
 
 const CSRF_COOKIE_NAME = "csrf_token";
 const CSRF_HEADER_NAME = "x-csrf-token";

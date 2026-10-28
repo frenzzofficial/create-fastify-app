@@ -2,8 +2,8 @@ import rateLimit, { type RateLimitPluginOptions } from "@fastify/rate-limit";
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
-import { envAppConfig } from "../env/app.env";
-import { AppError } from "../utils/errors";
+import { envAppConfig } from "../env/app.env.js";
+import { AppError } from "../utils/errors.js";
 
 const windowMs = envAppConfig.RATE_LIMIT_WINDOW_MS;
 const max = envAppConfig.RATE_LIMIT_MAX_REQUESTS;

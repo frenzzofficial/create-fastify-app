@@ -1,16 +1,16 @@
 import Fastify, { type FastifyInstance, LogController } from "fastify";
-import { envAppConfig } from "../packages/env/app.env";
-import bodyLimit from "../packages/middlewares/body-limit";
-import compression from "../packages/middlewares/compression";
-import cookie from "../packages/middlewares/cookie";
-import cors from "../packages/middlewares/cors";
-import csrfProtection from "../packages/middlewares/csrf";
-import errorHandler from "../packages/middlewares/error-handler";
-import notFound from "../packages/middlewares/not-found";
-import rateLimiter from "../packages/middlewares/rate-limiter";
-import requestLogging from "../packages/middlewares/request-logging";
-import securityHeaders from "../packages/middlewares/security-headers";
-import { registerBootstrap } from "./routes";
+import { envAppConfig } from "../packages/env/app.env.js";
+import bodyLimit from "../packages/middlewares/body-limit.js";
+import compression from "../packages/middlewares/compression.js";
+import cookie from "../packages/middlewares/cookie.js";
+import cors from "../packages/middlewares/cors.js";
+import csrfProtection from "../packages/middlewares/csrf.js";
+import errorHandler from "../packages/middlewares/error-handler.js";
+import notFound from "../packages/middlewares/not-found.js";
+import rateLimiter from "../packages/middlewares/rate-limiter.js";
+import requestLogging from "../packages/middlewares/request-logging.js";
+import securityHeaders from "../packages/middlewares/security-headers.js";
+import { registerBootstrap } from "./routes.js";
 
 export const createApp = async (): Promise<FastifyInstance> => {
 	const app = Fastify({

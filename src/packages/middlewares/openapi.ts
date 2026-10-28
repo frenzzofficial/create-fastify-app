@@ -3,8 +3,8 @@ import swaggerUi from "@fastify/swagger-ui";
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
-import { envAppConfig } from "../env/app.env";
-import { envPublicConfig } from "../env/public.env";
+import { envAppConfig } from "../env/app.env.js";
+import { envPublicConfig } from "../env/public.env.js";
 
 /**
  * OpenAPI docs

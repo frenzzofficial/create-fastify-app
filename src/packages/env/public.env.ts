@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { parseEnv } from "../utils/parse-env";
-import { envAppConfig } from "./app.env";
+import { parseEnv } from "../utils/parse-env.js";
+import { envAppConfig } from "./app.env.js";
 
 // On Vercel, default the public origin from the deployment host instead of localhost.
 const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
