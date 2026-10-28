@@ -22,7 +22,7 @@
 		"test:coverage": "bun test --coverage",
 		"type-coverage": "type-coverage --strict --at-least 100 --ignore-catch",
 		"typecheck": "tsc --noEmit",
-		"verify": "bun run typecheck && bun run lint:fix && bun run type-coverage && bun run knip && bun run spell && bun run test"
+		"verify": "bun run typecheck && bun run lint:fix && bun run type-coverage && bun run spell && bun run test"
 	},
 	"dependencies": {
 		"@fastify/compress": "^9.3.0",

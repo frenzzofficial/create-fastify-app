@@ -1,5 +1,7 @@
-// Vercel entrypoint for Fastify. Zero-config detection needs src/index.ts to import
-// `fastify` and default-export the instance. `app.listen()` is not used here.
+// Vercel entrypoint for Fastify. Vercel's zero-config Fastify support looks for this file
+// (src/index.ts) and expects it to create the instance and call `listen()` — that is the
+// only pattern its Fastify docs describe (a bare default export is not documented for
+// Fastify). Vercel serves the app through that listener.
 // See: https://vercel.com/docs/frameworks/backend/fastify
 
 import Fastify, { type FastifyInstance } from "fastify";
@@ -37,5 +39,9 @@ const buildApp = async (): Promise<FastifyInstance> => {
 };
 
 const app = await buildApp();
+
+// Also runs for the startup-error fallback, so a bad environment returns a JSON 500
+// instead of an opaque INTERNAL_FUNCTION_INVOCATION_FAILED.
+await app.listen({ port: Number(process.env.PORT) || 3000, host: "0.0.0.0" });
 
 export default app;
