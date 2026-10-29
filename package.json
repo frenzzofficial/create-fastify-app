@@ -4,8 +4,8 @@
 	"description": "A lightweight, scalable authentication service featuring Fastify, Drizzle ORM, PostgreSQL, and TypeScript",
 	"type": "module",
 	"scripts": {
-		"arch": "depcruise api src --config .dependency-cruiser.cjs",
-		"build:check": "bun build api/index.ts --outdir dist --target node --packages external",
+		"arch": "depcruise src --config .dependency-cruiser.cjs",
+		"build:check": "bun build src/index.ts --outdir dist --target node --packages external",
 		"check": "bun run verify",
 		"ci": "bun run typecheck && bun run lint && bun run type-coverage && bun run knip && bun run arch && bun run spell && bun run secrets && bun run test && bun run build:check",
 		"deps:upgrade": "ncu -i",
@@ -52,5 +52,8 @@
 		"sort-package-json": "^4.1.0",
 		"type-coverage": "^2.30.4",
 		"typescript": "^5.9.3"
+	},
+	"engines": {
+		"node": "24.x"
 	}
 }

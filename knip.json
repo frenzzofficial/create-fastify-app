@@ -1,7 +1,7 @@
 {
 	"$schema": "https://unpkg.com/knip@6/schema.json",
-	"entry": ["api/index.ts", "src/app/server.ts", "tests/**/*.test.ts"],
-	"project": ["api/**/*.ts", "src/**/*.ts", "tests/**/*.ts"],
+	"entry": ["src/index.ts", "tests/**/*.test.ts"],
+	"project": ["src/**/*.ts", "tests/**/*.ts"],
 	"ignoreDependencies": ["@secretlint/secretlint-rule-preset-recommend", "@faker-js/faker"],
 	"rules": { "types": "off" }
 }

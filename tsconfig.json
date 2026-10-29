@@ -28,6 +28,6 @@
 		"noPropertyAccessFromIndexSignature": false
 	},
 
-	"include": ["api", "src", "tests"],
+	"include": ["src", "tests"],
 	"exclude": ["node_modules", "dist", "coverage"]
 }
