@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import Fastify, { type FastifyInstance } from "fastify";
-import { createApp } from "./app/main.js";
+import { createApp } from "./app/main";
 
 const buildApp = async (): Promise<FastifyInstance> => {
 	try {

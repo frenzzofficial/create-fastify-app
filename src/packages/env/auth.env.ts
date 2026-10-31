@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { durationSeconds } from "../utils/duration.js";
-import { parseEnv } from "../utils/parse-env.js";
+import { durationSeconds } from "../utils/duration";
+import { parseEnv } from "../utils/parse-env";
 
 // Development-only fallbacks.
 // Production must provide distinct, strong secrets.

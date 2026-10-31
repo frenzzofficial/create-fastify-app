@@ -2,8 +2,8 @@ import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 
-import { createApp } from "../src/app/main.js";
-import { validate } from "../src/packages/utils/validate.js";
+import { createApp } from "../src/app/main";
+import { validate } from "../src/packages/utils/validate";
 
 type Body = { success: boolean; message?: string };
 

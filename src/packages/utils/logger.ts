@@ -1,4 +1,4 @@
-import { envAppConfig } from "../env/app.env.js";
+import { envAppConfig } from "../env/app.env";
 
 type LogLevel = "error" | "warn" | "info" | "debug";
 

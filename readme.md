@@ -105,9 +105,9 @@ v1.get("/things", { schema: { tags: ["API"], summary: "List things" } }, async (
 `vercel.json` routes every request to `api/index.ts`, a Vercel function that builds the Fastify app
 once per warm instance and hands requests to it. It runs on Vercel's Node.js runtime (no `bunVersion`).
 
-- Relative imports must carry a `.js` extension (`from "./routes.js"`): Vercel compiles each file to
-  plain ESM and Node cannot resolve imports that lack one. Biome enforces this
-  (`useImportExtensions`); `bun run lint:fix` fixes violations.
+- Relative imports have no file extension (`from "./routes"`). Bundle the function into one file
+  (e.g. `bun build src/index.ts --target node --format esm --outfile api/index.js`) so Node never
+  has to resolve them; an unbundled per-file ESM deploy cannot.
 - Set the four production secrets in the Vercel project (`APP_SECRET`,
   `AUTH_ACCESS_TOKEN_SECRET`, `AUTH_REFRESH_TOKEN_SECRET`), then redeploy. A bad environment returns a
   JSON 500 and logs `[startup failed]` with the reasons.

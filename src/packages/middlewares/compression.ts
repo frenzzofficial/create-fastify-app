@@ -2,7 +2,7 @@ import compress, { type FastifyCompressOptions } from "@fastify/compress";
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
-import { envAppConfig } from "../env/app.env.js";
+import { envAppConfig } from "../env/app.env";
 
 const MIN_BYTES_TO_COMPRESS = 1024;
 

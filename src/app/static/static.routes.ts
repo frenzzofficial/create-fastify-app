@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 
-import { getHTML, getStaticAsset } from "../../packages/utils/static-files.js";
+import { getHTML, getStaticAsset } from "../../packages/utils/static-files";
 
 const STATIC_PAGES = new Map<string, string>([
 	["/", "html/index.html"],
