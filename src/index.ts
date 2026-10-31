@@ -1,33 +1,56 @@
-import type { IncomingMessage, ServerResponse } from "node:http";
+import Fastify, { type FastifyInstance } from "fastify";
+import { createApp } from "./app/main.js";
 
-import type { FastifyInstance } from "fastify";
-
-// Vercel function entry. Every request is routed here (see vercel.json); the Fastify app is
-// built once per warm instance and reused, so cold starts pay the boot cost only once.
-let appPromise: Promise<FastifyInstance> | undefined;
-
-const getApp = (): Promise<FastifyInstance> => {
-	appPromise ??= import("./app/main.js").then(async ({ createApp }) => {
+const buildApp = async (): Promise<FastifyInstance> => {
+	try {
 		const app = await createApp();
 		await app.ready();
 		return app;
-	});
-	return appPromise;
-};
-
-export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {
-	try {
-		const app = await getApp();
-		app.server.emit("request", req, res);
 	} catch (thrown: unknown) {
-		appPromise = undefined; // let the next request retry instead of caching the failure
 		const message = thrown instanceof Error ? thrown.message : String(thrown);
 
-		// biome-ignore lint/suspicious/noConsole: startup failure must reach Vercel's function logs
-		console.error("[startup failed]", message);
-
-		res.statusCode = 500;
-		res.setHeader("content-type", "application/json; charset=utf-8");
-		res.end(JSON.stringify({ success: false, message: "Server failed to start" }));
+		const errorApp = Fastify();
+		errorApp.all("*", async (_request, reply) =>
+			reply.code(500).send({
+				success: false,
+				message: "Server failed to start",
+				...(process.env.NODE_ENV === "production" ? {} : { error: message }),
+			}),
+		);
+		await errorApp.ready();
+		return errorApp;
 	}
-}
+};
+
+const appPromise = buildApp();
+
+export default {
+	async fetch(request: Request): Promise<Response> {
+		const app = await appPromise;
+		const url = new URL(request.url);
+		const hasBody = request.method !== "GET" && request.method !== "HEAD";
+
+		const res = await app.inject({
+			method: request.method as "GET",
+			url: url.pathname + url.search,
+			headers: Object.fromEntries(request.headers),
+			payload: hasBody ? Buffer.from(await request.arrayBuffer()) : undefined,
+		});
+
+		const headers = new Headers();
+		for (const [key, value] of Object.entries(res.headers)) {
+			if (value === undefined) {
+				continue;
+			}
+			if (Array.isArray(value)) {
+				for (const item of value) {
+					headers.append(key, item);
+				}
+			} else {
+				headers.set(key, String(value));
+			}
+		}
+
+		return new Response(res.rawPayload, { status: res.statusCode, headers });
+	},
+};
