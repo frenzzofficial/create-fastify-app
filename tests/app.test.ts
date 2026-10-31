@@ -87,19 +87,16 @@ describe("app", () => {
 		expect(res.statusCode).toBe(200);
 		const paths = Object.keys(res.json<SpecBody>().paths);
 		expect(paths.sort()).toEqual(["/api/health", "/api/v1/", "/health"].sort());
-		const ui = await app.inject("/openapi/");
-		expect(ui.statusCode).toBe(200);
-		expect(ui.headers["content-type"]).toContain("text/html");
 	});
 
-	test("CORS preflight is answered before rate limit / csrf", async () => {
+	test("CORS preflight is answered before rate limit", async () => {
 		const res = await app.inject({
 			method: "OPTIONS",
 			url: "/api/v1",
 			headers: {
 				origin: "http://localhost:3000",
 				"access-control-request-method": "POST",
-				"access-control-request-headers": "content-type,x-csrf-token",
+				"access-control-request-headers": "content-type",
 			},
 		});
 		expect(res.statusCode).toBe(204);

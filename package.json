@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"arch": "depcruise src --config .dependency-cruiser.cjs",
-		"build:check": "bun build src/index.ts --outdir dist --target node",
+		"build:check": "bun build src/index.ts --outdir dist --target node --packages external",
 		"check": "bun run verify",
 		"ci": "bun run typecheck && bun run lint && bun run type-coverage && bun run knip && bun run arch && bun run spell && bun run secrets && bun run test && bun run build:check",
 		"deps:upgrade": "ncu -i",
@@ -26,11 +26,9 @@
 	},
 	"dependencies": {
 		"@fastify/compress": "^9.3.0",
-		"@fastify/cookie": "^11.1.5",
 		"@fastify/cors": "^11.3.1",
 		"@fastify/rate-limit": "^11.2.1",
 		"@fastify/swagger": "^9.9.2",
-		"@fastify/swagger-ui": "^6.1.2",
 		"fastify": "^5.12.7",
 		"fastify-plugin": "^6.0.1",
 		"zod": "^4.6.7"

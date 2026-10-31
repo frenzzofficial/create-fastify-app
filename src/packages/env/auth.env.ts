@@ -118,7 +118,3 @@ const authEnvSchema = z
 
 export const parseAuthEnv = (source: Record<string, string | undefined> = process.env) =>
 	parseEnv(authEnvSchema, "Auth", source);
-
-export const envAuthConfig = Object.freeze(parseAuthEnv());
-
-export type EnvAuthConfig = typeof envAuthConfig;

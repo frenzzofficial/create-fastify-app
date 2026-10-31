@@ -12,12 +12,12 @@ cp .env.example .env
 bun run dev          # http://localhost:7164
 ```
 
-| URL          | What                                 |
-| ------------ | ------------------------------------ |
-| `/`, `/docs` | Landing and documentation pages      |
-| `/health`    | Health check (503 when degraded)     |
-| `/api/v1`    | Versioned API root                   |
-| `/openapi`   | Swagger UI (spec at `/openapi/json`) |
+| URL             | What                             |
+| --------------- | -------------------------------- |
+| `/`, `/docs`    | Landing and documentation pages  |
+| `/health`       | Health check (503 when degraded) |
+| `/api/v1`       | Versioned API root               |
+| `/openapi/json` | OpenAPI spec (no Swagger UI)     |
 
 ## Scripts
 
@@ -64,14 +64,12 @@ after them.
 
 1. `request-logging` – one JSON line per request, with a request id (also sent as `x-request-id`)
 2. `security-headers` – CSP, HSTS (production), frame/referrer/permissions policies, on every response
-3. `cors` – before rate limiting and CSRF so preflight requests are answered first
+3. `cors` – before rate limiting so preflight requests are answered first
 4. `compression` – gzip, 1 KiB threshold
 5. `body-limit` – rejects oversized `Content-Length` before parsing
-6. `cookie` – signed cookies with secure defaults
-7. `rate-limiter` – fixed window per client IP, in memory (see Deployment)
-8. `csrf` – double-submit cookie (off by default)
-9. `error-handler`, `not-found` – one JSON error shape for everything
-10. Routes
+6. `rate-limiter` – fixed window per client IP, in memory (see Deployment)
+7. `error-handler`, `not-found` – one JSON error shape for everything
+8. Routes
 
 Errors have a single shape: `{ "success": false, "message": "..." }`. Throw `AppError` from services;
 non-operational errors (`AppError.internal`) are logged and returned as a generic 500.
@@ -80,7 +78,7 @@ non-operational errors (`AppError.internal`) are logged and returned as a generi
 
 All variables are validated at startup and fail with a readable list of problems. See
 [`.env.example`](.env.example) for the full list. In production these are required, must be at least
-32 characters and must all differ: `APP_SECRET`, `AUTH_COOKIE_SECRET`, `AUTH_ACCESS_TOKEN_SECRET`,
+32 characters and must all differ: `APP_SECRET`, `AUTH_ACCESS_TOKEN_SECRET`,
 `AUTH_REFRESH_TOKEN_SECRET`.
 
 ```bash
@@ -88,7 +86,7 @@ bun -e "console.log(require('node:crypto').randomBytes(48).toString('base64'))"
 ```
 
 Feature flags: `ENABLE_CORS`, `ENABLE_COMPRESSION`, `ENABLE_RATE_LIMIT`, `ENABLE_REQUEST_LOGGING`,
-`ENABLE_SECURITY_HEADERS`, `ENABLE_CSRF_PROTECTION`, `ENABLE_SWAGGER`.
+`ENABLE_SECURITY_HEADERS`, `ENABLE_SWAGGER`.
 
 ## Adding an endpoint
 
@@ -110,7 +108,7 @@ once per warm instance and hands requests to it. It runs on Vercel's Node.js run
 - Relative imports must carry a `.js` extension (`from "./routes.js"`): Vercel compiles each file to
   plain ESM and Node cannot resolve imports that lack one. Biome enforces this
   (`useImportExtensions`); `bun run lint:fix` fixes violations.
-- Set the four production secrets in the Vercel project (`APP_SECRET`, `AUTH_COOKIE_SECRET`,
+- Set the four production secrets in the Vercel project (`APP_SECRET`,
   `AUTH_ACCESS_TOKEN_SECRET`, `AUTH_REFRESH_TOKEN_SECRET`), then redeploy. A bad environment returns a
   JSON 500 and logs `[startup failed]` with the reasons.
 - `trustProxy` is enabled automatically on Vercel so rate limiting sees real client IPs; set

@@ -2,9 +2,7 @@ import Fastify, { type FastifyInstance, LogController } from "fastify";
 import { envAppConfig } from "../packages/env/app.env.js";
 import bodyLimit from "../packages/middlewares/body-limit.js";
 import compression from "../packages/middlewares/compression.js";
-import cookie from "../packages/middlewares/cookie.js";
 import cors from "../packages/middlewares/cors.js";
-import csrfProtection from "../packages/middlewares/csrf.js";
 import errorHandler from "../packages/middlewares/error-handler.js";
 import notFound from "../packages/middlewares/not-found.js";
 import rateLimiter from "../packages/middlewares/rate-limiter.js";
@@ -37,13 +35,11 @@ export const createApp = async (): Promise<FastifyInstance> => {
 	await app.register(securityHeaders);
 
 	// 2. Guards that apply to every request, before any route runs. CORS comes before the
-	//    rate limiter and CSRF so preflight (OPTIONS) requests are answered before them.
+	//    rate limiter so preflight (OPTIONS) requests are answered before them.
 	await app.register(cors);
 	await app.register(compression);
 	await app.register(bodyLimit);
-	await app.register(cookie); // must precede csrf, which reads cookies
 	await app.register(rateLimiter);
-	await app.register(csrfProtection);
 
 	// 3. Error and not-found handlers before the routes, so every route inherits them.
 	await app.register(errorHandler);

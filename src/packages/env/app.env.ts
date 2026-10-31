@@ -52,7 +52,6 @@ const serverEnvSchema = z
 		ENABLE_SWAGGER: z.stringbool().default(true),
 
 		ENABLE_CORS_PROTECTION: z.stringbool().default(false),
-		ENABLE_CSRF_PROTECTION: z.stringbool().default(false),
 
 		ENABLE_REDIS: z.stringbool().default(false),
 		ENABLE_SMTP: z.stringbool().default(false),

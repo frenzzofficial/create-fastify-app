@@ -1,5 +1,4 @@
 import swagger from "@fastify/swagger";
-import swaggerUi from "@fastify/swagger-ui";
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
@@ -9,8 +8,7 @@ import { envPublicConfig } from "../env/public.env.js";
 /**
  * OpenAPI docs
  * ------------------------------------------------------------
- * Generates the spec from route `schema` objects and serves Swagger UI at /openapi
- * (spec at /openapi/json). Register BEFORE the routes it should document.
+ * Generates the spec from route `schema` objects and serves the spec at /openapi/json. Register BEFORE the routes it should document.
  *
  * Routes that aren't part of the JSON API (HTML pages, assets) opt out with
  * `schema: { hide: true }`.
@@ -35,18 +33,11 @@ const openApiPlugin: FastifyPluginAsync = async (fastify) => {
 		},
 	});
 
-	await fastify.register(swaggerUi, {
-		routePrefix: "/openapi",
-		uiConfig: {
-			// Keeps operations collapsed by default so the page is scannable.
-			docExpansion: "list",
-			persistAuthorization: true,
-			// Skips the call to validator.swagger.io for an internal docs page.
-			validatorUrl: "none",
-		},
-	});
+	// Spec only (no Swagger UI): the UI's static-file dependency is ESM-only and breaks on
+	// Vercel's CommonJS function wrapper.
+	fastify.get("/openapi/json", { schema: { hide: true } }, async () => fastify.swagger());
 
-	fastify.log.info("OpenAPI docs are enabled at /openapi.");
+	fastify.log.info("OpenAPI docs are enabled at /openapi/json.");
 };
 
 export default fp(openApiPlugin, { name: "openapi" });

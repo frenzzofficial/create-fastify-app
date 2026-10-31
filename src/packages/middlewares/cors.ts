@@ -10,7 +10,6 @@ import { envClientConfig } from "../env/client.env.js";
  * ------------------------------------------------------------
  * - Supports explicitly allowlisted client origins.
  * - Enables credentials for cookie-based authentication.
- * - Supports CSRF protection headers.
  * - Handles preflight OPTIONS requests.
  * - Registers early through Fastify's plugin lifecycle.
  * - Can be disabled through ENABLE_CORS.
@@ -27,14 +26,14 @@ const corsPlugin = fp<FastifyCorsOptions>(
 			// Allow only configured client origins.
 			origin: envClientConfig.CLIENT_ORIGINS,
 
-			// Required for cookie-based authentication and CSRF protection.
+			// Required for cookie-based authentication.
 			credentials: true,
 
 			// Supported HTTP methods.
 			methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 
 			// Headers clients are allowed to send.
-			allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
+			allowedHeaders: ["Content-Type", "Authorization"],
 
 			// Headers browser clients can access in responses.
 			exposedHeaders: ["Content-Length", "Content-Type"],

@@ -1,3 +1,4 @@
+import type { IncomingMessage, ServerResponse } from "node:http";
 import Fastify, { type FastifyInstance } from "fastify";
 import { createApp } from "./app/main.js";
 
@@ -24,33 +25,9 @@ const buildApp = async (): Promise<FastifyInstance> => {
 
 const appPromise = buildApp();
 
-export default {
-	async fetch(request: Request): Promise<Response> {
-		const app = await appPromise;
-		const url = new URL(request.url);
-		const hasBody = request.method !== "GET" && request.method !== "HEAD";
-
-		const res = await app.inject({
-			method: request.method as "GET",
-			url: url.pathname + url.search,
-			headers: Object.fromEntries(request.headers),
-			payload: hasBody ? Buffer.from(await request.arrayBuffer()) : undefined,
-		});
-
-		const headers = new Headers();
-		for (const [key, value] of Object.entries(res.headers)) {
-			if (value === undefined) {
-				continue;
-			}
-			if (Array.isArray(value)) {
-				for (const item of value) {
-					headers.append(key, item);
-				}
-			} else {
-				headers.set(key, String(value));
-			}
-		}
-
-		return new Response(res.rawPayload, { status: res.statusCode, headers });
-	},
-};
+// Plain Node handler: hands the request straight to Fastify's http server, so
+// `app.inject()` (and its light-my-request dependency) is never loaded at runtime.
+export default async function handler(request: IncomingMessage, response: ServerResponse) {
+	const app = await appPromise;
+	app.server.emit("request", request, response);
+}
