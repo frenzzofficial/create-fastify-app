@@ -1,5 +1,5 @@
 {
-	"$schema": "https://openapi.vercel.sh/vercel.json",
 	"version": 2,
-	"routes": [{ "src": "/(.*)", "dest": "api/index.ts" }]
+	"buildCommand": "bun build src/index.ts --target node --format esm --outfile api/index.js",
+	"routes": [{ "src": "/(.*)", "dest": "api/index.js" }]
 }
